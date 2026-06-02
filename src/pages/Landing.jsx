@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import chatbotImg from '../assets/chatbot.png'
 import symptomImg from '../assets/symptom.png'
@@ -5,6 +6,8 @@ import pregnancyImg from '../assets/pregnancy.png'
 import infectionImg from '../assets/infection.png'
 
 function Landing() {
+  const navigate = useNavigate()
+
   return (
     <div style={{
       minHeight: '100vh',
@@ -78,20 +81,24 @@ function Landing() {
 
         {/* CTA Buttons */}
         <div className="flex gap-4 flex-wrap justify-center">
-          <button style={{
-            background: 'linear-gradient(135deg, #eb427d, #f39ab8)',
-            color: '#FFFFFF',
-            border: 'none',
-            borderRadius: '9999px',
-            padding: '0.85rem 2.5rem',
-            fontSize: '1rem',
-            fontWeight: '700',
-            letterSpacing: '0.08em',
-            boxShadow: '0 8px 25px rgba(235, 66, 125, 0.35)',
-            cursor: 'pointer',
-            transition: 'all 0.3s ease',
-            textTransform: 'uppercase'
-          }}
+
+          {/* Get Started — goes to /signup */}
+          <button
+            onClick={() => navigate('/signup')}
+            style={{
+              background: 'linear-gradient(135deg, #eb427d, #f39ab8)',
+              color: '#FFFFFF',
+              border: 'none',
+              borderRadius: '9999px',
+              padding: '0.85rem 2.5rem',
+              fontSize: '1rem',
+              fontWeight: '700',
+              letterSpacing: '0.08em',
+              boxShadow: '0 8px 25px rgba(235, 66, 125, 0.35)',
+              cursor: 'pointer',
+              transition: 'all 0.3s ease',
+              textTransform: 'uppercase'
+            }}
             onMouseEnter={e => {
               e.currentTarget.style.transform = 'translateY(-3px)'
               e.currentTarget.style.boxShadow = '0 12px 35px rgba(235, 66, 125, 0.5)'
@@ -104,20 +111,23 @@ function Landing() {
             Get Started Free
           </button>
 
-          <button style={{
-            background: 'transparent',
-            color: '#4bb5aa',
-            border: '2px solid #4bb5aa',
-            borderRadius: '9999px',
-            padding: '0.85rem 2.5rem',
-            fontSize: '1rem',
-            fontWeight: '700',
-            letterSpacing: '0.08em',
-            boxShadow: '0 8px 25px rgba(75, 181, 170, 0.15)',
-            cursor: 'pointer',
-            transition: 'all 0.3s ease',
-            textTransform: 'uppercase'
-          }}
+          {/* See How It Works — scrolls down to feature cards */}
+          <button
+            onClick={() => document.getElementById('features').scrollIntoView({ behavior: 'smooth' })}
+            style={{
+              background: 'transparent',
+              color: '#4bb5aa',
+              border: '2px solid #4bb5aa',
+              borderRadius: '9999px',
+              padding: '0.85rem 2.5rem',
+              fontSize: '1rem',
+              fontWeight: '700',
+              letterSpacing: '0.08em',
+              boxShadow: '0 8px 25px rgba(75, 181, 170, 0.15)',
+              cursor: 'pointer',
+              transition: 'all 0.3s ease',
+              textTransform: 'uppercase'
+            }}
             onMouseEnter={e => {
               e.currentTarget.style.transform = 'translateY(-3px)'
               e.currentTarget.style.background = '#4bb5aa'
@@ -137,60 +147,60 @@ function Landing() {
       </div>
 
       {/* Feature Cards */}
-      <div className="flex flex-wrap justify-center gap-6"
+      <div id="features" className="flex flex-wrap justify-center gap-6"
         style={{ padding: '0 24px 80px' }}>
 
         {[
-  { img: chatbotImg, title: 'AI Chatbot', desc: 'Ask anything about your health — in your language.', color: '#eb427d', bg: 'linear-gradient(135deg, #f9eef6, #f7dce7)' },
-  { img: symptomImg, title: 'Symptom Checker', desc: 'Understand what your body is telling you.', color: '#4bb5aa', bg: 'linear-gradient(135deg, #e7eaf5, #d4f5f2)' },
-  { img: pregnancyImg, title: 'Pregnancy Chances', desc: 'Know your fertile window with a simple QnA.', color: '#c9940a', bg: 'linear-gradient(135deg, #fdf6d8, #f5e27d55)' },
-  { img: infectionImg, title: 'Infection Checker', desc: 'Identify possible infections before they worsen.', color: '#018a7a', bg: 'linear-gradient(135deg, #e7eaf5, #b2ede7)' },
-].map((card, i) => (
-  <div key={i} style={{
-    background: card.bg,
-    borderRadius: '24px',
-    padding: '32px 24px',
-    width: '220px',
-    textAlign: 'center',
-    boxShadow: '0 4px 24px rgba(243, 154, 184, 0.12)',
-    border: '1px solid #f8e2ec',
-    transition: 'all 0.3s ease',
-    cursor: 'default'
-  }}
-    onMouseEnter={e => {
-      e.currentTarget.style.transform = 'translateY(-8px)'
-      e.currentTarget.style.boxShadow = '0 16px 40px rgba(243, 154, 184, 0.25)'
-    }}
-    onMouseLeave={e => {
-      e.currentTarget.style.transform = 'translateY(0)'
-      e.currentTarget.style.boxShadow = '0 4px 24px rgba(243, 154, 184, 0.12)'
-    }}
-  >
-    <img src={card.img} alt={card.title} style={{
-      width: '80px',
-      height: '80px',
-      objectFit: 'contain',
-      marginBottom: '16px',
-      filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.1))'
-    }} />
-    <h3 style={{
-      color: card.color,
-      fontSize: '1rem',
-      fontWeight: '700',
-      marginBottom: '8px',
-      letterSpacing: '0.05em'
-    }}>
-      {card.title}
-    </h3>
-    <p style={{
-      color: '#9CA3AF',
-      fontSize: '0.85rem',
-      lineHeight: 1.6
-    }}>
-      {card.desc}
-    </p>
-  </div>
-))}
+          { img: chatbotImg, title: 'AI Chatbot', desc: 'Ask anything about your health — in your language.', color: '#eb427d', bg: 'linear-gradient(135deg, #fdf6d8, #f5e27d55)' },
+          { img: symptomImg, title: 'Symptom Checker', desc: 'Understand what your body is telling you.', color: '#4bb5aa', bg: 'linear-gradient(135deg, #e7eaf5, #d4f5f2)' },
+          { img: pregnancyImg, title: 'Pregnancy Chances', desc: 'Know your fertile window with a simple QnA.', color: '#c9940a', bg: 'linear-gradient(135deg, #fdf6d8, #f5e27d55)' },
+          { img: infectionImg, title: 'Infection Checker', desc: 'Identify possible infections before they worsen.', color: '#018a7a', bg: 'linear-gradient(135deg, #e7eaf5, #b2ede7)' },
+        ].map((card, i) => (
+          <div key={i} style={{
+            background: card.bg,
+            borderRadius: '24px',
+            padding: '32px 24px',
+            width: '220px',
+            textAlign: 'center',
+            boxShadow: '0 4px 24px rgba(243, 154, 184, 0.12)',
+            border: '1px solid #f8e2ec',
+            transition: 'all 0.3s ease',
+            cursor: 'default'
+          }}
+            onMouseEnter={e => {
+              e.currentTarget.style.transform = 'translateY(-8px)'
+              e.currentTarget.style.boxShadow = '0 16px 40px rgba(243, 154, 184, 0.25)'
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.transform = 'translateY(0)'
+              e.currentTarget.style.boxShadow = '0 4px 24px rgba(243, 154, 184, 0.12)'
+            }}
+          >
+            <img src={card.img} alt={card.title} style={{
+              width: '80px',
+              height: '80px',
+              objectFit: 'contain',
+              marginBottom: '16px',
+              filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.1))'
+            }} />
+            <h3 style={{
+              color: card.color,
+              fontSize: '1rem',
+              fontWeight: '700',
+              marginBottom: '8px',
+              letterSpacing: '0.05em'
+            }}>
+              {card.title}
+            </h3>
+            <p style={{
+              color: '#9CA3AF',
+              fontSize: '0.85rem',
+              lineHeight: 1.6
+            }}>
+              {card.desc}
+            </p>
+          </div>
+        ))}
       </div>
 
     </div>

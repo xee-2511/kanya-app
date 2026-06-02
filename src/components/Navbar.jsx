@@ -1,6 +1,9 @@
+import { useNavigate } from 'react-router-dom'
 import logo from '../assets/logo.png'
 
 function Navbar() {
+  const navigate = useNavigate()
+
   return (
     <nav className="w-full px-8 py-5 flex items-center justify-between"
       style={{
@@ -11,11 +14,11 @@ function Navbar() {
         zIndex: 100,
       }}>
 
-      {/* Left — Logo + Kanya */}
+      {/* Left — Logo + Kanya — navigates to home */}
       <div
         className="flex items-center gap-3"
         style={{ cursor: 'pointer' }}
-        onClick={() => window.location.reload()}
+        onClick={() => navigate('/')}
         onMouseEnter={e => {
           e.currentTarget.querySelector('img').style.boxShadow = '0 0 30px rgba(255,255,255, 0.9)'
           e.currentTarget.querySelector('span').style.filter = 'drop-shadow(0 0 18px rgba(255,255,255,0.9))'
@@ -53,23 +56,28 @@ function Navbar() {
         </span>
       </div>
 
-      {/* Right — Buttons */}
+      {/* Right — Buttons — Login goes to /login, Sign Up goes to /signup */}
       <div className="flex items-center gap-4">
-        {['Login', 'Sign Up'].map(label => (
-          <button key={label} style={{
-            color: '#e8789f',
-            background: '#f8e2ec',
-            border: 'none',
-            borderRadius: '9999px',
-            letterSpacing: '0.1em',
-            fontSize: '0.9rem',
-            fontWeight: '700',
-            padding: '0.6rem 2rem',
-            boxShadow: '0 4px 15px rgba(248, 226, 236, 0.5)',
-            transition: 'all 0.3s ease',
-            cursor: 'pointer',
-            textTransform: 'uppercase'
-          }}
+        {[
+          { label: 'Login', path: '/login' },
+          { label: 'Sign Up', path: '/signup' }
+        ].map(({ label, path }) => (
+          <button key={label}
+            onClick={() => navigate(path)}
+            style={{
+              color: '#e8789f',
+              background: '#f8e2ec',
+              border: 'none',
+              borderRadius: '9999px',
+              letterSpacing: '0.1em',
+              fontSize: '0.9rem',
+              fontWeight: '700',
+              padding: '0.6rem 2rem',
+              boxShadow: '0 4px 15px rgba(248, 226, 236, 0.5)',
+              transition: 'all 0.3s ease',
+              cursor: 'pointer',
+              textTransform: 'uppercase'
+            }}
             onMouseEnter={e => {
               e.currentTarget.style.boxShadow = '0 4px 25px rgba(248, 226, 236, 0.9)'
               e.currentTarget.style.transform = 'translateY(-2px)'
