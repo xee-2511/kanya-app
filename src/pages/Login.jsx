@@ -5,12 +5,15 @@ import chatbotImg from '../assets/chatbot.png'
 import symptomImg from '../assets/symptom.png'
 import pregnancyImg from '../assets/pregnancy.png'
 import femaleImg from '../assets/female.png'
+import { loginUser } from '../api/auth'
 
 function Login() {
   const navigate = useNavigate()
   const [form, setForm] = useState({ email: '', password: '' })
   const [showPassword, setShowPassword] = useState(false)
   const [slide, setSlide] = useState(0)
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
 
   const slides = [
     {
@@ -227,16 +230,39 @@ function Login() {
             }}>Forgot password?</span>
           </div>
 
-          {/* Login Button */}
-          <button style={{
-            width: '100%', padding: '0.85rem',
-            background: 'linear-gradient(135deg, #eb427d, #f39ab8)',
-            color: '#FFFFFF', border: 'none', borderRadius: '12px',
-            fontSize: '1rem', fontWeight: '700', letterSpacing: '0.1em',
-            textTransform: 'uppercase', cursor: 'pointer',
-            boxShadow: '0 8px 25px rgba(235, 66, 125, 0.35)',
-            transition: 'all 0.3s ease', marginBottom: '24px'
-          }}
+          {/* Error Message */}
+{error && (
+  <p style={{ color: '#E05C5C', fontSize: '0.85rem', marginBottom: '12px', textAlign: 'center' }}>
+    {error}
+  </p>
+)}
+
+{/* Login Button */}
+          <button
+            onClick={async () => {
+              setError('')
+              try {
+                setLoading(true)
+                const data = await loginUser(form.email, form.password)
+                localStorage.setItem('token', data.token)
+                localStorage.setItem('user', JSON.stringify(data.user))
+                navigate('/dashboard')
+              } catch (err) {
+                setError(err.message)
+              } finally {
+                setLoading(false)
+              }
+            }}
+            style={{
+              width: '100%', padding: '0.85rem',
+              background: 'linear-gradient(135deg, #eb427d, #f39ab8)',
+              color: '#FFFFFF', border: 'none', borderRadius: '12px',
+              fontSize: '1rem', fontWeight: '700', letterSpacing: '0.1em',
+              textTransform: 'uppercase', cursor: 'pointer',
+              boxShadow: '0 8px 25px rgba(235, 66, 125, 0.35)',
+              transition: 'all 0.3s ease', marginBottom: '24px',
+              opacity: loading ? 0.7 : 1
+            }}
             onMouseEnter={e => {
               e.currentTarget.style.transform = 'translateY(-2px)'
               e.currentTarget.style.boxShadow = '0 12px 35px rgba(235, 66, 125, 0.5)'
@@ -246,9 +272,8 @@ function Login() {
               e.currentTarget.style.boxShadow = '0 8px 25px rgba(235, 66, 125, 0.35)'
             }}
           >
-            Login
+            {loading ? 'Signing In...' : 'Login'}
           </button>
-
           {/* Sign Up Link */}
           <p style={{ textAlign: 'center', fontSize: '0.9rem', color: '#9CA3AF' }}>
             Don't have an account?{' '}

@@ -5,6 +5,7 @@ import chatbotImg from '../assets/chatbot.png'
 import symptomImg from '../assets/symptom.png'
 import pregnancyImg from '../assets/pregnancy.png'
 import femaleImg from '../assets/female.png'
+import { registerUser } from '../api/auth'
 
 function Signup() {
   const navigate = useNavigate()
@@ -12,6 +13,8 @@ function Signup() {
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirm, setShowConfirm] = useState(false)
   const [slide, setSlide] = useState(0)
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
 
   const slides = [
     {
@@ -246,27 +249,54 @@ function Signup() {
             )}
           </div>
 
-          {/* Sign Up Button */}
-          <button style={{
-            width: '100%', padding: '0.85rem',
-            background: 'linear-gradient(135deg, #eb427d, #f39ab8)',
-            color: '#FFFFFF', border: 'none', borderRadius: '12px',
-            fontSize: '1rem', fontWeight: '700', letterSpacing: '0.1em',
-            textTransform: 'uppercase', cursor: 'pointer',
-            boxShadow: '0 8px 25px rgba(235, 66, 125, 0.35)',
-            transition: 'all 0.3s ease', marginBottom: '20px'
-          }}
-            onMouseEnter={e => {
-              e.currentTarget.style.transform = 'translateY(-2px)'
-              e.currentTarget.style.boxShadow = '0 12px 35px rgba(235, 66, 125, 0.5)'
-            }}
-            onMouseLeave={e => {
-              e.currentTarget.style.transform = 'translateY(0)'
-              e.currentTarget.style.boxShadow = '0 8px 25px rgba(235, 66, 125, 0.35)'
-            }}
-          >
-            Sign Up
-          </button>
+          {/* Error Message */}
+            {error && (
+              <p style={{ color: '#E05C5C', fontSize: '0.85rem', marginBottom: '12px', textAlign: 'center' }}>
+                {error}
+              </p>
+            )}
+
+            {/* Sign Up Button */}
+            <button
+              onClick={async () => {
+                setError('')
+                if (form.password !== form.confirmPassword) {
+                  setError('Passwords do not match')
+                  return
+                }
+                try {
+                  setLoading(true)
+                  const data = await registerUser(form.name, form.email, form.password)
+                  localStorage.setItem('token', data.token)
+                  localStorage.setItem('user', JSON.stringify(data.user))
+                  navigate('/dashboard')
+                } catch (err) {
+                  setError(err.message)
+                } finally {
+                  setLoading(false)
+                }
+              }}
+              style={{
+                width: '100%', padding: '0.85rem',
+                background: 'linear-gradient(135deg, #eb427d, #f39ab8)',
+                color: '#FFFFFF', border: 'none', borderRadius: '12px',
+                fontSize: '1rem', fontWeight: '700', letterSpacing: '0.1em',
+                textTransform: 'uppercase', cursor: 'pointer',
+                boxShadow: '0 8px 25px rgba(235, 66, 125, 0.35)',
+                transition: 'all 0.3s ease', marginBottom: '20px',
+                opacity: loading ? 0.7 : 1
+              }}
+              onMouseEnter={e => {
+                e.currentTarget.style.transform = 'translateY(-2px)'
+                e.currentTarget.style.boxShadow = '0 12px 35px rgba(235, 66, 125, 0.5)'
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.transform = 'translateY(0)'
+                e.currentTarget.style.boxShadow = '0 8px 25px rgba(235, 66, 125, 0.35)'
+              }}
+            >
+              {loading ? 'Creating Account...' : 'Sign Up'}
+            </button>
 
           {/* Login Link */}
           <p style={{ textAlign: 'center', fontSize: '0.9rem', color: '#9CA3AF' }}>
