@@ -16,6 +16,9 @@ app.get('/', (req, res) => {
 // Routes
 const authRoutes = require('./routes/auth')
 app.use('/api/auth', authRoutes)
+
+const periodRoutes = require('./routes/period')
+app.use('/api/period', periodRoutes)
 // Database connection
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {
